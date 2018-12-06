@@ -1,0 +1,113 @@
+<div class='card'>
+   <div *ngIf='!showLoading' class="card-header" style="text-align:left"> {{headerTitle}}</div>
+   <div *ngIf='!showLoading' class="card-body">
+      <div style="text-align:center;color: red;">{{errorMessage}}</div><br />
+      <form (ngSubmit)='saveProduct()' [formGroup]='productForm' novalidate>
+
+         <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label" for="productName">Item Name : </label>
+            <div class="col-md-8">
+               <input class="form-control" id="prdName" type="text" placeholder="Product Name (Required)"
+                  formControlName="productName" [ngClass]="{'is-invalid': productNameValidation}" />
+               <span class="invalid-feedback">
+                  {{productNameValidation}}
+               </span>
+            </div>
+         </div>
+
+         <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label" for="productCode">Item Code : </label>
+            <div class="col-md-8">
+               <input class="form-control" id="prdId" type="text" placeholder="Product Code (Required)" formControlName="productCode"
+                  [ngClass]="{'is-invalid': productCodeValidation }" />
+               <span class="invalid-feedback">
+                  {{productCodeValidation}}
+               </span>
+            </div>
+         </div>
+
+         <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label" for="starrating">Star Rating(1-5) : </label>
+            <div class="col-md-8">
+               <input class="form-control" id="prdRating" type="text" placeholder="Product Rating (Required 1-5)"
+                  formControlName="starrating" [ngClass]="{'is-invalid': productRatingValidation }" />
+               <span class="invalid-feedback">
+                  {{productRatingValidation}}
+               </span>
+            </div>
+         </div>
+
+         <div *ngIf="false" class="row">
+            <div  class="row form-group row mb-2" formArrayName="tags" *ngFor="let tag of tags.controls;let i=index">
+
+               <label class="col-md-2 col-form-label" attr.for="{{ 'prdTag' +i }}" [formGroupName]="i">Tag: </label>
+               <div [formGroupName]="i">
+                  <input class="col-md-8 form-control" id="{{ 'prdTag' +i }}" type="text" placeholder="Tag"
+                     formControlName="tags" />
+               </div>
+               <div class="col-md-2" [formGroupName]="i">
+                  <input type="button" value='Delete Tag' (click)='deleteTag(i)'>
+               </div>
+
+            </div>
+            <div class="row form-group row mb-2">
+               <div class="col-md-2">
+                  <input type="button" value='Add Tag' (click)='addTags()'>
+               </div>
+               <div class="col-md-8">
+                  <label></label>
+               </div>
+            </div>
+         </div>
+        
+         <div class="form-group row mb-2">
+               <label class="col-md-2 col-form-label" for="price">Price: </label>
+               <div class="col-md-8">
+                  <input class="form-control" id="prdPrice" type="number" placeholder="price" formControlName="price" [ngClass]="{'is-invalid': productPriceValidation }"/>
+                  <span class="invalid-feedback">
+                        {{productPriceValidation}}
+                  </span>
+               </div>
+            </div>
+         
+            <div class="form-group row mb-2">  
+                  <label class="col-md-2 col-form-label" for="releaseDate">Release Date: </label>
+                  <div class="bootstrap-iso col-md-8">
+                     <input class="form-control"  id="prdReleaseDate" formControlName="releaseDate" type="date"  [ngClass]="{'is-invalid': productDateValidation }"/>
+                     <span class="invalid-feedback">
+                           {{productDateValidation}}
+                     </span>
+                  </div>
+               </div>
+
+         <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label" for="description">Description: </label>
+            <div class="col-md-8">
+               <input class="form-control" id="prdDesc" type="text" placeholder="Description" formControlName="description" />
+
+            </div>
+         </div>
+
+
+
+
+
+         <button class="btn btn-primary mr-3" [disabled]="" type='submit' [style.width.px]=80 [disabled]="!productForm.valid"
+            [title]="(productForm.valid)?'save your data':'disable untill form get valid'">Save
+         </button>
+
+         <button class="btn btn-primary mr-3" [disabled]="" type='submit' [style.width.px]=80 [title]="Cancel" (click)="cancel()">Cancel
+         </button>
+
+         <button class="btn btn-primary mr-3" type='submit' [style.width.px]=80 [disabled]="!productForm.valid" [title]="(productForm.valid)?'Delete your data':'disable untill form get valid'"
+            (click)="deleteProduct()">
+            Delete
+         </button>
+
+         <div class="row" *ngIf="false">Data : {{this.productForm.value | json}}</div>
+
+      </form>
+      
+   </div>
+   <div *ngIf='showLoading' class='col-md-12'><loading></loading></div>
+</div>

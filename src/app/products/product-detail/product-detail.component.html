@@ -1,0 +1,72 @@
+<div style="text-align:center;color: red;">{{errorMessage}}</div><br/>
+<div *ngIf='showLoading' class='col-md-12'><loading></loading></div>
+<div *ngIf="product">
+  <div class="card-header">
+    {{headerTitle+ ': ' + product.productName}}{{dataFromNestedComponent}}
+  </div>
+  
+
+<div class='row card-body col-md-12' >
+<div class='card-body col-md-9'>
+    <div class='row'>
+        <div class='col-md-3'><b>Item Name:</b></div>
+        <div class='col-md-3'>{{product.productName}}</div>
+    </div>
+    <div class='row'>
+        <div class='col-md-3'><b>Item Code:</b></div>
+        <div class='col-md-3'>{{product.productCode | lowercase | convertToSpacesPipe:'-'}}</div>
+    
+      </div>
+      <div class='row'>
+        <div class='col-md-3'><b>Avalable Date:</b></div>
+        <div class='col-md-3'>{{product.releaseDate}}</div>
+      
+    </div>
+    <div class='row'>
+      <div class='col-md-3'><b>Item Price:</b></div>
+      <div class='col-md-3'>{{product.price | currency:'USD':'symbol':'1.2-2'}}</div>
+      
+    </div>
+    <div class='row'>
+      <div class='col-md-3'><b>Item Description:</b></div>
+      <div class='col-md-3'>{{product.description}}</div>
+      
+    </div>
+    <div class='row'>
+      <div class='col-md-3'><b>User Rating:</b></div>
+      <div class='col-md-3'><pm-star [rating]='product.starrating' (sendDataToParent)='listenEventFromChaild($event)'>
+      </pm-star></div>
+     
+    </div>
+</div>
+
+<div class='card-body col-md-3'>
+  <img 
+  [src]='product.imageUrl' 
+   [title]='product.productName' 
+   [style.width.px]='100' 
+   [style.height.px]='100' 
+   [style.margin.px]='0'/>
+  </div>
+</div>
+
+  <div class="row card-footer col-md-12">
+   <div class='col-md-3'>
+      <button class="btn btn-primary"
+      (click)="back()"
+      [style.width.px]=80>
+      <i class="fa fa-chevron-left"></i>Bcak
+      </button>
+
+
+   </div>
+    <div class='col-md-3'>
+
+        <button class="btn btn-primary" [routerLink]="['/products', product.id, 'edit']">Edit
+        </button>
+
+    </div>
+    
+    
+  </div>
+</div>

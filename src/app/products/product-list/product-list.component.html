@@ -1,0 +1,78 @@
+
+<div class='card'>
+    <div class='card-header' style="text-align:left">
+        {{headerTitle}}<b>{{dataFromNestedComponent}}</b>
+    </div>
+
+    <!-- <div *ngIf="error$ | async as ErrorMessage" class="alert alert-danger">{{ErrorMessage}}</div> -->
+     <div *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
+    
+    
+    <div class='card-body'>
+       
+        <div class='row'>
+            <div class='col-md-2'>Filter By:</div>
+            <div class='col-md-4'><input type='text' [(ngModel)]='listFilter' /></div>
+        </div>
+        <div class='row'>
+            <div class='col-md-2'><b>Filter By:</b></div>
+            <div class='col-md-4'><b>{{listFilter}}</b></div>
+        </div>
+
+        <div class='table-responsive'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th *ngIf='filteredProducts && filteredProducts.length>0'>
+                            <button class='btn btn-primary' (click)='btnClick($event.target.click)'>
+                                {{btnTxtFlag?'Hide':'Show'}} Image
+                            </button>
+                        </th>
+                        <th>Item Name</th>
+                        <th *ngIf='dispalyCode'>Item Code</th>
+                        <th>Available Since</th>
+                        <th>Item Price</th>
+                        <th>5 Star Rating</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+           <tbody *ngIf='!showLoading && filteredProducts && filteredProducts.length>0'>
+                    <tr *ngFor="let product of filteredProducts">
+                        <td>
+                            <img *ngIf="btnTxtFlag" [src]='product.imageUrl' [title]='product.description'
+                                [style.width.px]='imageW' [style.margin.px]='imageMrgn' />
+                        </td>
+                        <td>
+                            <a [routerLink]="['/products', product.id]">{{product.productName}}</a>
+                        </td>
+                        <td *ngIf='dispalyCode'>{{product.productCode | lowercase | convertToSpacesPipe:'-'}}</td>
+                        <td>{{product.releaseDate}}</td>
+                        <td>{{product.price|currency:'USD':'symbol':'1.2-2'}}</td>
+                        <!-- <td>{{product.starrating}}</td> -->
+                        <td>
+                            <pm-star [rating]='product.starrating' (sendDataToParent)='listenEventFromChaild($event)'>
+                            </pm-star>
+                        </td>
+                        <td>
+                            <button class='btn btn-primary' [routerLink]="['/products', product.id, 'edit']">Edit
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+                
+            </table>
+        
+            <div *ngIf='showLoading' class='col-md-12'><loading></loading></div>
+            <div *ngIf='!showLoading && filteredProducts == null || (filteredProducts && filteredProducts.length == 0)'>
+                
+                   No Records found
+             
+            </div>
+        </div>
+     
+    </div>
+    <div class='card-footer' style="text-align:left" *ngIf='filteredProducts && filteredProducts.length != 0'>
+        <input type="checkbox" [checked]='dispalyCode' (click)="showProductCode($event.target.checked)" /><b>ShowProductCodes</b>
+    </div>
+</div>
